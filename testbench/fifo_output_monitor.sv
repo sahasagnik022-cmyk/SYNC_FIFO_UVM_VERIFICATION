@@ -17,22 +17,17 @@ class fifo_output_monitor extends uvm_monitor;
 
     virtual task run_phase(uvm_phase phase);
         fifo_seq_item item;
-     //   bit rd_l=0;
-     //   bit wr_l=0;
         wait(!vif.rst);
         forever begin
             @(vif.out_mon_cb);
             if(vif.out_mon_cb.rd_en) begin
                 @(vif.out_mon_cb);
-          //      @(vif.out_mon_cb);
                 item=fifo_seq_item::type_id::create("item");
                 item.data_out=vif.out_mon_cb.data_out;
                 item.full=vif.out_mon_cb.full;
                 item.empty=vif.out_mon_cb.empty;
                 out_mon_port.write(item);
             end
-          //  rd_l=vif.out_mon_cb.rd_en && vif.out_mon_cb.rd_cs;
-         //   wr_l=vif.out_mon_cb.wr_en && vif.out_mon_cb.wr_cs;
         end
     endtask
 endclass
